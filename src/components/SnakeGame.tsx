@@ -32,7 +32,7 @@ export default function SnakeGame() {
     setFood(newFood);
   }, []);
 
-  const calculateNextDirection = useCallback((snake: Position[], food: Position, currentDirection: Direction): Direction => {
+  const calculateNextDirection = useCallback((snake: Position[], food: Position, currentDirection: Direction, playerSnake: Position[]): Direction => {
     const head = snake[0];
     
     const oppositeDirections = {
@@ -67,9 +67,46 @@ export default function SnakeGame() {
         return { direction: dir, score: -1000 };
       }
 
+      // 플레이어 뱀과의 충돌 위험 체크
+      const playerCollisionRisk = playerSnake.some(segment => {
+        const distanceToSegment = Math.abs(nextX - segment.x) + Math.abs(nextY - segment.y);
+        return distanceToSegment <= 2; // 2칸 이내의 거리는 위험으로 간주
+      });
+
+      // 플레이어 뱀의 예상 이동 방향을 고려
+      const playerHead = playerSnake[0];
+      const playerNextPositions = [
+        { x: playerHead.x, y: playerHead.y - 1 }, // UP
+        { x: playerHead.x, y: playerHead.y + 1 }, // DOWN
+        { x: playerHead.x - 1, y: playerHead.y }, // LEFT
+        { x: playerHead.x + 1, y: playerHead.y }, // RIGHT
+      ];
+
+      const playerCollisionRiskFuture = playerNextPositions.some(pos => {
+        const distanceToFuturePos = Math.abs(nextX - pos.x) + Math.abs(nextY - pos.y);
+        return distanceToFuturePos <= 1;
+      });
+
       // 목표(음식)까지의 거리 계산
       const distanceToFood = Math.abs(food.x - nextX) + Math.abs(food.y - nextY);
-      return { direction: dir, score: -distanceToFood };
+      
+      // 최종 점수 계산
+      let score = -distanceToFood; // 기본 점수는 음식까지의 거리의 음수값
+
+      // 플레이어 뱀 회피 로직
+      if (playerCollisionRisk) {
+        score -= 500; // 플레이어 뱀 근처는 큰 페널티
+      }
+      if (playerCollisionRiskFuture) {
+        score -= 300; // 플레이어 뱀의 예상 이동 경로도 페널티
+      }
+
+      // 벽 근처에서는 추가 페널티
+      if (nextX <= 1 || nextX >= gridSize - 2 || nextY <= 1 || nextY >= gridSize - 2) {
+        score -= 100;
+      }
+
+      return { direction: dir, score };
     });
 
     // 가장 높은 점수를 가진 방향 선택
@@ -138,7 +175,7 @@ export default function SnakeGame() {
     }
 
     const computerHead = { ...computerSnake[0] };
-    const nextComputerDirection = calculateNextDirection(computerSnake, food, computerDirection);
+    const nextComputerDirection = calculateNextDirection(computerSnake, food, computerDirection, playerSnake);
     setComputerDirection(nextComputerDirection);
     
     switch (nextComputerDirection) {
