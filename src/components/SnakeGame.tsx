@@ -20,7 +20,7 @@ export default function SnakeGame() {
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
   const [gameResult, setGameResult] = useState<GameResult>(null);
-  const [speed] = useState(200);
+  const [speed, setSpeed] = useState(200);
 
   const gridSize = 20;
 
@@ -177,7 +177,11 @@ export default function SnakeGame() {
     const computerAteFood = computerHead.x === food.x && computerHead.y === food.y;
 
     if (playerAteFood) {
-      setPlayerScore(prev => prev + 1);
+      setPlayerScore(prev => {
+        const newScore = prev + 1;
+        setSpeed(current => Math.max(70, current - 10));
+        return newScore;
+      });
       generateFood();
       newPlayerSnake.push(...playerSnake);
     } else {
@@ -185,7 +189,11 @@ export default function SnakeGame() {
     }
 
     if (computerAteFood) {
-      setComputerScore(prev => prev + 1);
+      setComputerScore(prev => {
+        const newScore = prev + 1;
+        setSpeed(current => Math.max(70, current - 10));
+        return newScore;
+      });
       generateFood();
       newComputerSnake.push(...computerSnake);
     } else {
@@ -232,6 +240,7 @@ export default function SnakeGame() {
     setPlayerScore(0);
     setComputerScore(0);
     setGameResult(null);
+    setSpeed(200);
     generateFood();
   };
 
