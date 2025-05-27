@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐍 멀티플레이어 스네이크 게임
 
-## Getting Started
+Next.js로 구현된 플레이어 vs 컴퓨터 AI의 스네이크 게임입니다.
 
-First, run the development server:
+## 🎮 게임 특징
 
+- **플레이어 vs 컴퓨터**: 혼자서도 즐길 수 있는 AI 대전 모드
+- **스마트한 컴퓨터 AI**: 
+  - 음식을 향해 최적의 경로로 이동
+  - 플레이어와의 충돌을 예측하고 회피
+  - 벽과의 충돌을 피하는 영리한 움직임
+- **동적 난이도 시스템**:
+  - 점수가 올라갈수록 게임 속도가 증가
+  - 최소 속도 제한으로 극단적인 난이도 상승 방지
+- **승패 판정 시스템**:
+  - 머리끼리 부딪히면 무승부
+  - 상대방 몸에 부딪히면 부딪힌 쪽이 패배
+
+## 🕹️ 조작 방법
+
+- **방향키**를 사용하여 플레이어 스네이크를 조종
+- 현재 진행 방향의 반대 방향으로는 이동 불가
+- 벽이나 자신의 몸, 상대방 스네이크와 부딪히지 않도록 주의
+
+## 🎯 게임 목표
+
+1. 빨간 사과를 먹어서 점수 획득
+2. 컴퓨터 스네이크보다 더 많은 점수 획득
+3. 충돌을 피해 더 오래 생존
+
+## 🛠️ 기술 스택
+
+- **Frontend**: Next.js, React, TypeScript
+- **스타일링**: Tailwind CSS
+- **상태 관리**: React Hooks (useState, useEffect, useCallback)
+
+## 🚀 실행 방법
+
+1. 저장소 클론:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone [저장소 URL]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 의존성 설치:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. 개발 서버 실행:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. 브라우저에서 열기:
+```
+http://localhost:3000
+```
 
-## Learn More
+## 🎨 게임 화면
 
-To learn more about Next.js, take a look at the following resources:
+- 파란색: 플레이어 스네이크
+- 주황색: 컴퓨터 스네이크
+- 빨간색: 사과 (점수 아이템)
+- 진한 색상: 스네이크의 머리
+- 연한 색상: 스네이크의 몸통
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔄 게임 규칙
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. 각 스네이크는 지속적으로 앞으로 이동
+2. 사과를 먹으면:
+   - 점수 1점 획득
+   - 스네이크의 길이가 증가
+   - 게임 속도가 약간 증가
+3. 게임 오버 조건:
+   - 벽에 부딪힘
+   - 자신의 몸에 부딪힘
+   - 상대방 스네이크와 충돌
 
-## Deploy on Vercel
+## 🤖 컴퓨터 AI 전략
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. 기본적으로 가장 가까운 사과를 향해 이동
+2. 플레이어 스네이크와의 충돌 위험 감지
+3. 플레이어의 예상 이동 경로를 계산하여 회피
+4. 벽 근처에서는 더 조심스러운 움직임
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🔜 향후 계획
+
+- [ ] 난이도 선택 기능
+- [ ] 로컬 멀티플레이어 모드
+- [ ] 하이스코어 저장 기능
+- [ ] 다양한 맵 추가
+- [ ] 파워업 아이템 추가
