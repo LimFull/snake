@@ -243,19 +243,34 @@ export default function SnakeGame() {
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      // 현재 방향의 반대 방향으로는 이동할 수 없도록 설정
+      const oppositeDirections = {
+        'UP': 'DOWN',
+        'DOWN': 'UP',
+        'LEFT': 'RIGHT',
+        'RIGHT': 'LEFT'
+      };
+
+      let newDirection: Direction | null = null;
+
       switch (e.key) {
         case 'ArrowUp':
-          if (playerDirection !== 'DOWN') setPlayerDirection('UP');
+          newDirection = 'UP';
           break;
         case 'ArrowDown':
-          if (playerDirection !== 'UP') setPlayerDirection('DOWN');
+          newDirection = 'DOWN';
           break;
         case 'ArrowLeft':
-          if (playerDirection !== 'RIGHT') setPlayerDirection('LEFT');
+          newDirection = 'LEFT';
           break;
         case 'ArrowRight':
-          if (playerDirection !== 'LEFT') setPlayerDirection('RIGHT');
+          newDirection = 'RIGHT';
           break;
+      }
+
+      // 새로운 방향이 현재 방향의 반대가 아닐 경우에만 방향 변경
+      if (newDirection && newDirection !== oppositeDirections[playerDirection as keyof typeof oppositeDirections]) {
+        setPlayerDirection(newDirection);
       }
     };
 
